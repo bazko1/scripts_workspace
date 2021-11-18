@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re
+import sts
 
 BASE_URL = "https://sts.pl"
 
@@ -42,20 +43,22 @@ for entry in sport_entries:
 
         
         match = matches[0]
-        event = match.find("span", {"class": "liga"})
-        match_name = match.find("td", {"class": "matchName"})
-        start_time = match.find("td", {"class": "date_time"})
-        start_day = match.find("span", {"class": "date"})
-        bet = match.find_all("td", {"class": "bet"})
+        bet = sts.Bet.from_col(match, discipline=discipline)
+        print(bet)
+        # event = match.find("span", {"class": "liga"})
+        # match_name = match.find("td", {"class": "matchName"})
+        # start_time = match.find("td", {"class": "date_time"})
+        # start_day = match.find("span", {"class": "date"})
+        # bet = match.find_all("td", {"class": "bet"})
         
-        print('event:', re.sub("\s", "", ''.join(event.stripped_strings)))
-        print('day:', re.sub("[a-zA-Z]|-|\s", "", ''.join(start_day.stripped_strings)))
-        print('time:', ''.join(start_time.stripped_strings))
-        if match_name:
-            print('name:', ''.join(match_name.stripped_strings))
+        # print('event:', re.sub("\s", "", ''.join(event.stripped_strings)))
+        # print('day:', re.sub("[a-zA-Z]|-|\s", "", ''.join(start_day.stripped_strings)))
+        # print('time:', ''.join(start_time.stripped_strings))
+        # if match_name:
+        #     print('name:', ''.join(match_name.stripped_strings))
 
-        bet_stake = list(map(lambda x: tuple(x.stripped_strings), bet))
-        print(bet_stake)
+        # bet_stake = list(map(lambda x: tuple(x.stripped_strings), bet))
+        # print(bet_stake)
 
     # print(discipline, number)
 
