@@ -29,7 +29,7 @@ class Bet:
         bet = match_col.find_all("td", {"class": "bet"})
 
         event = re.sub("\n", "", ''.join(event.stripped_strings))
-        day = re.sub("[a-zA-Z]|-|\s", "", ''.join(start_day.stripped_strings))
+        day = re.sub("[^0-9\.]", "", ''.join(start_day.stripped_strings))
         time = ''.join(start_time.stripped_strings)
         date = (day, time)
         if match_name:

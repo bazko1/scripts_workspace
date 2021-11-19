@@ -1,14 +1,15 @@
 from bs4 import BeautifulSoup
 import requests
+import sts
+import re
 
 
 class Scraper:
     def __init__(self, base_url):
         self.base_url = base_url
-        self.entries = []
+        self.entries = {}
 
     def get_entries(self):
-        out = []
         request = requests.get(self.base_url)
         request.raise_for_status()
         soup = BeautifulSoup(request.text, "html.parser")
@@ -24,19 +25,42 @@ class Scraper:
                 continue
 
             discipline = url_parts[-3]
-            out.append((discipline, self.base_url + url, ))
+            self.entries[discipline] = self.base_url + url
 
-        self.entries = out
-        return out
+        return self.entries
 
 
     def get_discipline_names(self):
-        pass
+        if not self.entries:
+            self.get_entries()
+        return list(self.entries.keys())
 
     def get_discipline_urls(self):
-        pass
+        if not self.entries:
+            self.get_entries()
+        return list(self.entries.values())
 
-    def get_bets(self, discipline):
+    def get_discipline_events(self, discipline):
+        if not self.entries:
+            self.get_entries()
+        if not discipline in self.entries:
+            print("Discipline does not exist")
+            return []
+        
+        discipline_url = self.entries[discipline]
+        
+        print(discipline_url)
+        request = requests.get(discipline_url)
+        request.raise_for_status()
+        discipline_soup = BeautifulSoup(request.text, "html.parser")
+
+        matches = discipline_soup.find_all(
+            "table", {"class": re.compile(r"^col\d+$")})
+
+        
+        match = matches[0]
+        bet = sts.Bet.from_col(match, discipline=discipline)
+        print(bet)
         pass
 
 # interface for getting main page
