@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
-import sts
+import sys
 import re
+import sts
 
 
 class Scraper:
@@ -44,12 +45,11 @@ class Scraper:
         if not self.entries:
             self.get_entries()
         if not discipline in self.entries:
-            print("Discipline does not exist")
+            print(f"Discipline '{discipline}' does not exist", file=sys.stderr)
             return []
         
         discipline_url = self.entries[discipline]
-        
-        print(discipline_url)
+
         request = requests.get(discipline_url)
         request.raise_for_status()
         discipline_soup = BeautifulSoup(request.text, "html.parser")

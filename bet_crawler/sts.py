@@ -13,8 +13,8 @@ class Bet:
         self.bet = bet
         
     def __repr__(self):
-        return f"{self.discipline} - {self.event} | {' - '  + self.match_name if self.match_name else ''}\n" \
-               f"{self.date}\n" \
+        return f"{self.discipline} - {self.event}{' - '  + self.match_name if self.match_name else ''}\n" \
+               f"{' - '.join(self.date)}\n" \
                f"{' - '.join(self.bet.keys())}\n" \
                f"{' - '.join(self.bet.values())}"
     
