@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from bs4 import BeautifulSoup
-import requests
-import re
+
+
+#  from bs4 import BeautifulSoup TODO: Add check if library exists
 import sys
 import argparse
 
