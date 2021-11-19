@@ -56,12 +56,14 @@ class Scraper:
 
         matches = discipline_soup.find_all(
             "table", {"class": re.compile(r"^col\d+$")})
+        output = []
+        for id_, match in enumerate(matches):
+            prev = sts.Bet()
+            if id_ > 0:
+                prev = output[id_ - 1]
+            output.append(sts.Bet.from_col(match, discipline, *prev.get_shared_items()))
 
-        
-        match = matches[0]
-        bet = sts.Bet.from_col(match, discipline=discipline)
-        print(bet)
-        pass
+        return output
 
 # interface for getting main page
 # getting disciplines

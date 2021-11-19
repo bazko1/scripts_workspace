@@ -16,7 +16,9 @@ s = scraper.Scraper(BASE_URL)
 for discipline, discipline_url in s.get_entries().items():
 
     if discipline == "koszykowka":
-        s.get_discipline_events(discipline)
+        ev = s.get_discipline_events(discipline)
+        for e in ev:
+            print(str(e) + "\n")
         # print(discipline_url)
         # request = requests.get(discipline_url)
         # request.raise_for_status()
