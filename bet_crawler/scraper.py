@@ -64,7 +64,3 @@ class Scraper:
             output.append(sts.Bet.from_col(match, discipline, *prev.get_shared_items()))
 
         return output
-
-# interface for getting main page
-# getting disciplines
-# getting actual bets and stakes for each discipline
