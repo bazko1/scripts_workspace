@@ -49,7 +49,7 @@ do
         echo ext: $extension dest: $destination_dir
         for file in "$source_dir"/*
         do
-            [[ $file =~ .$ext ]] && echo "found"
+            [[ $file =~ ^.*\.$extension$ ]] && echo "found $file"
         done
     done
 
