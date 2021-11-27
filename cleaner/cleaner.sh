@@ -29,6 +29,8 @@ print_info "Starting..."
 [ ! -d "$source_dir" ] && print_error "Directory {${source_dir}} do not exist!" &&
                           print_error "Cannot clean empty directory! Exiting..." && exit 1
 
+print_info "Will clean $source_dir."
+
 # loop moving files into correcd directories
 for ext in ${!files_association[*]}
 do
@@ -45,6 +47,10 @@ do
     for extension in "${extensions[@]}"
     do
         echo ext: $extension dest: $destination_dir
+        for file in "$source_dir"/*
+        do
+            [[ $file =~ .$ext ]] && echo "found"
+        done
     done
 
 done
