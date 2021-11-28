@@ -31,6 +31,16 @@ Associations and clean directory control:
 
 This tool provides functionallity for cleaning any directory by moving files to more dedicated directories.
 Its main purpose is to clean home 'Downloads' directory.
+
+Examples:
+    # Perform recursive cleaning dry run on test directory using default associations and limit depth.
+    $scriptname -d -b ./test/ -r --max-depth 1
+    
+    # Perform recursive cleaning dry run with custom associations.
+    $scriptname -d -b ./test/ -r -a 'pdf=Documents;mp3,wav=Music'
+    
+    # Dry run for local user cleaning
+    $scriptname -d
 EOF
     exit 0
 }

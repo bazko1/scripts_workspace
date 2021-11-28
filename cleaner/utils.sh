@@ -41,19 +41,19 @@ function move_file() {
 #   Dictionary with associations extension -> Directory
 #######################################
 function clean_directory() {
-    base_path="$1"
-    source_dir="$2"
-    files_association="$3"
+    base_path="${1}"
+    source_dir="${2}"
+    files_association="${3}"
 
-    recurse_dirs=( "$source_dir" )
+    recurse_dirs=( "${source_dir}" )
 
     function main_loop() {
-        loop_over="$1"
+        loop_over="${1}"
         recurse_dirs=()
 
         for file in "${loop_over}"/*
         do
-            if [ -d $file ] && $RECURSIVE
+            if [ -d "${file}" ] && $RECURSIVE
             then
                 recurse_dirs+=("${file}")
                 continue
@@ -64,7 +64,7 @@ function clean_directory() {
             for ext in ${!files_association[*]}
             do
                 # figure out destination dir
-                destination_dir=${files_association[$ext]}
+                destination_dir="${files_association[$ext]}"
                 [ ! -d "$destination_dir" ] && destination_dir="${base_path}/${destination_dir}"
                 [ ! -d "$destination_dir" ] && print_warning "Directory {${destination_dir}} do not exist!" \
                 && continue
