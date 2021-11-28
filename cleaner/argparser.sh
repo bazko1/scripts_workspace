@@ -8,7 +8,9 @@ Cleans home Downloads directory using default associations and destination direc
 
 Miscellaneous:
     -h, --help                Print this help text and exit
+
     -q, --quiet               Suppress printing messages
+
     -d, --dry-run             Do not move any file just print what would happen
 
 Associations and clean directory control:
@@ -17,9 +19,15 @@ Associations and clean directory control:
     -s, --source-dir DIR                Directory to be cleaned if not defined default will be taken  - Downloads.
 
     -a, --associations ASSOCIATIONS     Semicolon separated rules. If not given default will be used.
-                                        Example: 'pdf,txt=Documents;img=Pictures'
+                                        Example: 'pdf,txt=Documents;img=Pictures'.
 
-    -c, --config CONFIG                 run using configurations defined in CONFIG 
+    -r, --recursive                     Parse source directory recursively for subfolders.
+                                        Example: In default config will clean also Downloads/subfolder and its
+                                        subfolders if such exists.
+
+    --max-depth DEPTH                   Defines max recurse depth level, takes effect only if given with -r 
+                                        flag. Example DEPTH=1 will clean Download, Download/sub1 and Download/sub2 
+                                        but will not clean Download/sub1/sub3.
 
 This tool provides functionallity for cleaning any directory by moving files to more dedicated directories.
 Its main purpose is to clean home 'Downloads' directory.
@@ -39,7 +47,6 @@ function parse_args() {
                 QUIET=true
                 shift
                 ;;
-            
             -d|--dry-run)
                 DRY_RUN=true
                 shift
@@ -59,8 +66,12 @@ function parse_args() {
                 shift
                 shift
                 ;;
-            -c|--config)
-                config_file="$2"
+            -r|--recursive)
+                RECURSIVE=true
+                shift
+                ;;
+            --max-depth)
+                MAX_DEPTH="$2"
                 shift
                 shift
                 ;;

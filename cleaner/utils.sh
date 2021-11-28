@@ -1,7 +1,7 @@
 LOG_FILE=cleaner.log
 QUIET=false
 DRY_RUN=false
-
+RECURSIVE=false
 # Recreate log file every run
 $QUIET && :> $LOG_FILE
 
@@ -33,7 +33,7 @@ function move_file() {
 }
 
 #######################################
-# Cleans given source directory by moving files 
+# Cleans given source directory by moving files
 # to directories defined by extensions.
 # Arguments:
 #   Base path for constructing full paths
@@ -45,25 +45,69 @@ function clean_directory() {
     source_dir="$2"
     files_association="$3"
 
-    # loop moving files into correct directories
-    for ext in ${!files_association[*]}
-    do
-        # figure out destination dir
-        destination_dir=${files_association[$ext]}
-        [ ! -d "$destination_dir" ] && destination_dir="${base_path}/${destination_dir}"
-        [ ! -d "$destination_dir" ] && print_warning "Directory {${destination_dir}} do not exist!" \
-        && continue
+    recurse_dirs=( "$source_dir" )
 
-        IFS=',' read -ra extensions <<< "$ext"
-        for extension in "${extensions[@]}"
+    function main_loop() {
+        loop_over="$1"
+        recurse_dirs=()
+
+        for file in "${loop_over}"/*
         do
-            for file in "${source_dir}"/*
+            if [ -d $file ] && $RECURSIVE
+            then
+                recurse_dirs+=("${file}")
+                continue
+
+            fi
+
+            # loop moving files into correct directories
+            for ext in ${!files_association[*]}
             do
-                [[ $file =~ ^.*\.$extension$ ]] && \
-                move_file "${file}" "${destination_dir}"
+                # figure out destination dir
+                destination_dir=${files_association[$ext]}
+                [ ! -d "$destination_dir" ] && destination_dir="${base_path}/${destination_dir}"
+                [ ! -d "$destination_dir" ] && print_warning "Directory {${destination_dir}} do not exist!" \
+                && continue
+
+                IFS=',' read -ra extensions <<< "$ext"
+
+                for extension in "${extensions[@]}"
+                do
+                    [[ $file =~ ^.*\.$extension$ ]] && \
+                    move_file "${file}" "${destination_dir}"
+                done
             done
         done
+    }
 
+    depth_counter=0
+    while [ "${#recurse_dirs[@]}" -gt 0 ]
+    do
+        $RECURSIVE && [ -n "${MAX_DEPTH}" ] \
+        && [ $depth_counter -gt $MAX_DEPTH ] && break
+
+        for rec_dir in "${recurse_dirs[@]}"
+        do
+            main_loop "$rec_dir"
+        done
+        ((depth_counter++))
     done
+
 }
 
+#######################################
+# Parse given string as if it was
+# associations config.
+# Input example 'pdf,txt=Documents;img=Pictures'
+#######################################
+function parse_associations() {
+    input=$1
+    echo INP $input
+    IFS=';' read -ra rules <<< "$input"
+    for rule in "${rules[@]}"
+    do
+        echo RULE $rule
+        IFS='=' read ext dir <<< "$rule"
+        files_association["$ext"]="$dir"
+    done
+}
