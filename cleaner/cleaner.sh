@@ -1,9 +1,12 @@
 #!/bin/bash
 
 source utils.sh
+source argparser.sh
 
-base_path="./test"
-source_dir="test/Downloads"
+parse_args "$@"
+
+[ -z "$base_path" ] && base_path="$HOME"
+[ -z "$source_dir" ] && source_dir="Downloads"
 
 declare -A files_association
 files_association=( ["pdf,txt"]="Documents"
@@ -20,4 +23,4 @@ files_association=( ["pdf,txt"]="Documents"
 
 print_info "Will clean $source_dir."
 clean_directory "$base_path" "$source_dir" "$files_association"
-
+exit 0

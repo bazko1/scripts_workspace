@@ -1,9 +1,9 @@
 LOG_FILE=cleaner.log
 QUIET=false
-DRY_RUN=true
+DRY_RUN=false
 
 # Recreate log file every run
-:> $LOG_FILE
+$QUIET && :> $LOG_FILE
 
 function print_error() {
     $QUIET && return
@@ -12,7 +12,7 @@ function print_error() {
 
 function print_warning() {
     $QUIET && return
-    echo -e "WARNING: $*" | tee -a $LOG_FILE >&2
+    echo -e "WARNING: $*" | tee -a $LOG_FILE
 }
 
 function print_info() {
@@ -26,10 +26,10 @@ function print_info() {
 #######################################
 function move_file() {
     $DRY_RUN && \
-    print_info "Would move {$1} to {$2}." && \
+    print_info "Would move {${1}} to {${2}}." && \
     return
 
-    mv "$1" "$2"
+    mv "${1}" "${2}"
 }
 
 #######################################
@@ -57,10 +57,10 @@ function clean_directory() {
         IFS=',' read -ra extensions <<< "$ext"
         for extension in "${extensions[@]}"
         do
-            for file in "$source_dir"/*
+            for file in "${source_dir}"/*
             do
                 [[ $file =~ ^.*\.$extension$ ]] && \
-                move_file $file $destination_dir
+                move_file "${file}" "${destination_dir}"
             done
         done
 
