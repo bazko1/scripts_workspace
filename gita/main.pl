@@ -1,21 +1,15 @@
+#!/usr/bin/env perl
 use strict;
 use warnings;
+use File::Basename;
+use lib dirname (__FILE__);
+use Gita;
+use Cwd;
 
-sub run_command  {
-
+sub main {
+    my $gita = new Gita(getcwd(), 2);
+    $gita->check_git_binary();
+    $gita->search_git_repos();
+    $gita->call_git_command("foo");
 }
-
-sub check_git_binary {
-    my $git_version = `/usr/bin/env git --version 2>&1`;
-    my $r_c = $?;
-    print "$git_version";
-    return $r_c
-}
-
-
-
-# my out = `/usr/bin/env git --version`
-# my $output = `git --help`;
-# print $output;
-my $out = check_git_binary();
-print "OUT=$out\n"
+main();
