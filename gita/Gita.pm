@@ -7,6 +7,7 @@ sub new {
     my $self = {
         "source_path" => shift,
         "depth_level" => shift,
+        "dry_run" => shift
     };
 
     
@@ -28,15 +29,18 @@ sub search_git_repos {
                 ->directory
                 ->name('.git')
                 ->maxdepth($depth)
+                ->mindepth($depth)
                 ->in($source);
-    print("dirs:= @gitdirs\m");
+    print("dirs:= @gitdirs\n");
     return @gitdirs
 
 }
 
 sub call_git_command {
     my $self = shift;
-    my $command = shift;
+    my $subcommands = shift;
+    my $dry_run = $self->{'dry_run'};
+    print("\nCalling command: git $subcommands\n");
     return 0;
 }
 
