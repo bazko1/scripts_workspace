@@ -12,7 +12,7 @@ gita [OPTIONS] [GIT_COMMANDS]
 
 =over 4
 
-=item B<--help>
+=item B<--help|-h>
 
     Print a brief help message and exits.
 
