@@ -109,6 +109,35 @@ multiple repositories using single call.
 
 =head1 EXAMPLES
 
+This directory have following structure:
 
+=over 1
+
+=item
+    ├── gita 
+
+=item
+    ├── Gita.pm
+
+=item    
+    ├── test
+
+=item    
+    │   ├── repo1
+
+=item    
+        │   ├── .git
+
+=item    
+    │   └── repo2
+
+=item    
+        │   ├── .git
+
+=back
+
+Calling 
+
+> ./gita --depth 3 checkout -b Feature2
 
 =cut
