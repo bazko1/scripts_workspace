@@ -1,16 +1,16 @@
 #!/bin/bash
-
-source utils.sh
-source argparser.sh
+script_path=$(dirname $0)
+source ${script_path}/utils.sh
+source ${script_path}/argparser.sh
 
 parse_args "$@"
 
 [ -z "${base_path}" ] && base_path="$HOME"
-[ -z "${source_dir}" ] && source_dir="Downloads"
+[ -z "${source_dir}" ] && source_dir=${base_path}"/Downloads"
 
 declare -A files_association
 [ -z "${associations}" ] && \
-files_association=( ["pdf,txt"]="Documents"
+files_association=( ["doc,pdf,txt"]="Documents"
                     ["png,jpg"]="Pictures"
                     ["mp3,wav"]="Music"
                     ["mp4,mkv"]="Videos"

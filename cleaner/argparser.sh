@@ -1,4 +1,4 @@
-source utils.sh
+
 
 function usage() {
     scriptname="$0"
