@@ -34,6 +34,7 @@ sub search_git_dirs {
 
 }
 
+# Call git command on recursively found .git repositories
 sub call_git_command {
     my $self = shift;
     my $subcommands = shift;
