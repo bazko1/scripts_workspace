@@ -84,7 +84,4 @@ This directory have following structure:
 
 > ./gita --depth 3 push
 
-
-
-The idea for project functionallity comes from following existing project https://github.com/nosarthur/gita.
 =cut
