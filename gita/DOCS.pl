@@ -68,7 +68,7 @@ This directory have following structure:
 
 # Calling bellow command will create new branch in repo1 and repo2
 
-> ./gita --depth 3 checkout -b Feature4
+> ./gita --path ./test checkout -b Feature4
 
 # Calling bellow command will add all modified filles in repo1 and repo2
 
