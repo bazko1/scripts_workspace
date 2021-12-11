@@ -24,7 +24,7 @@ def parse_args():
         formatter_class=argparse.RawTextHelpFormatter)
 
     sub = parser.add_subparsers(dest="command")
-    info_parser = sub.add_parser("info", help="Program prints information about events.")
+    info_parser = sub.add_parser("info", help="Program prints information about events. Call `%(prog)s info -h` for information about parameters.")
     info_parser.add_argument("-d", "--disciplines", required=False, help="Comma separated list of disciplines to display information about.")
     info_parser.add_argument("-p", "--print", required=False, help="Print matches information to standard out instead of to file.", action="store_true")
     info_parser.add_argument("-o", "--outfile", required=False, help="Output file. By default its ./bets.txt", default="bets.txt")
