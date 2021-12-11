@@ -21,6 +21,7 @@ sub new {
 sub search_git_dirs {
     my $self = shift;
     $source = $self->{'source_path'};
+    $source =~ s/\/+$//;
     $depth = $self->{'depth_level'};
     print "Searching .git in dir ($source) with depth $depth.\n";
     my @gitdirs;
