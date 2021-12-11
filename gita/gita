@@ -23,7 +23,7 @@ sub main {
                 'path=s');
     
     if($opt_help == 1) {
-        pod2text(dirname (__FILE__)."/DOCS.pl");
+        pod2text(dirname (__FILE__)."/DOCS");
         exit 0;
     }
     my $depth = $opt_depth;
