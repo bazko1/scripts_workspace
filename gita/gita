@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+
 use strict;
 use warnings;
 use File::Basename;
@@ -9,26 +10,34 @@ use Getopt::Long;
 
 sub main {
 
-    sub process {
-        my $arg = shift;
-        print "unknown arg $arg\n";
-    }
     Getopt::Long::Configure ("require_order", "pass_through");
     our $opt_depth = 2;
     our $opt_dry_run = 0;
     our $opt_path = getcwd();
+    our $opt_help = 0;
     GetOptions( 'dry-run',
+                'help',
                 'depth=i',
                 'path=s');
+    
+    if($opt_help == 1) {
+        print "HELP";
+        exit 0;
+    }
     my $depth = $opt_depth;
     my $dry_run = $opt_dry_run;
     my $path = $opt_path;
 
     my @gitCommands=@ARGV;
-    print "gitCommands=", join(" ", @gitCommands), "\n";
+    # print "gitCommands=", join(" ", @gitCommands), "\n";
     
     my $gita = new Gita($path, $depth, $dry_run);
-    $gita->check_git_binary();
+    if($gita->check_git_binary()) {
+        print "Did not find git binary in your path.\n",
+              "Please install and try again.\n";
+        exit 1;
+    }
     $gita->call_git_command(join(" ", @gitCommands));
+    exit 0;
 }
 main();

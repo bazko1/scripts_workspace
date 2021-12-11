@@ -1,4 +1,6 @@
 package Gita;
+use File::Find::Rule;
+use File::Basename;
 
 sub new {
 
@@ -11,18 +13,16 @@ sub new {
     };
 
     bless $self, $class;
-    print("Creating Gita class: ", $self->{'source_path'}," ", $self->{'depth_level'},"\n");
 
     return $self;
 }
 
 # search .git/ directories
-sub search_git_repos {
+sub search_git_dirs {
     my $self = shift;
     $source = $self->{'source_path'};
     $depth = $self->{'depth_level'};
-    print "Searching .git in $source\n";
-    use File::Find::Rule;
+    print "Searching .git in dir ($source) with depth $depth.\n";
     print($dir);
     my @gitdirs = File::Find::Rule
                 ->directory
@@ -30,7 +30,6 @@ sub search_git_repos {
                 ->maxdepth($depth)
                 ->mindepth($depth)
                 ->in($source);
-    print("dirs:= @gitdirs\n");
     return @gitdirs
 
 }
@@ -39,13 +38,25 @@ sub call_git_command {
     my $self = shift;
     my $subcommands = shift;
     my $dry_run = $self->{'dry_run'};
-    my $command = "/usr/bin/env git ".$subcommands;
-    foreach($self->search_git_repos()) {
-        print "call on dir:= $_";
+    my $depth = $self->{'depth_level'};
+    my $source = $self->{'source_path'};
+    my @gitdirs = map {File::Basename::dirname($_)} $self->search_git_dirs();
+    if(!@gitdirs) {
+        print "Did not find any git directories.\n";
+        exit 1;
+    }
+    
+    foreach(@gitdirs) {
+        my $command = "/usr/bin/env git -C $_ ".$subcommands;
+        if($dry_run == 1) {
+            print "Would call command:\n$command\n";
+        } else {
+            print "\nRepository: ", File::Basename::basename($_), "\n\n";
+            system $command;        
+        }
+        
     }
 
-    # print("\nCalling command: $command\n");
-    # system $command;
     return 0;
 }
 
