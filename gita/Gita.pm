@@ -48,13 +48,13 @@ sub call_git_command {
     
     foreach(@gitdirs) {
         my $command = "/usr/bin/env git -C $_ ".$subcommands;
+        print "-" x 30,
+              "\nRepository: ", 
+              File::Basename::basename($_),
+              "\n\n";
         if($dry_run == 1) {
-            print "Would call command:\n$command\n";
+            print "Would call command:\n$command\n"; 
         } else {
-            print "-" x 30,
-                  "\nRepository: ", 
-                  File::Basename::basename($_),
-                  "\n\n";
             system $command;        
         }
     }

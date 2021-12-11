@@ -65,31 +65,50 @@ gita [OPTIONS] [GIT_COMMANDS]
 
 =item B<--path PATH>
     
-    Path to start searching for git repositories from.
+    Path to start searching for git repositories from. (String)
+    If not specified default value is current working directory.
 
 =item B<--depth DEPTH>
     
-    Recurisivity search depth level.
+    Integer representing recurisivity search depth level.
+    If not specified default value is 2.
 
 =item B<--dry-run>
     
-    Path to start searching for git repositories from.
+    Do not call any git command only print what would happen.
 
 =back
 
 =head1 GIT_COMMANDS
 
-=over 4
+=over 1
 
-=item B<>
+=item 
+    Commands and flags to be called using git tool.
+
+=item 
+    The commands should be those operating on already 
+
+=item
+    initialized git working area (init/clone does not make sense).
+        
+=item
+    For supported commands see `git --help` - work, examine, grow,
     
-    Path to start searching for git repositories from.
+=item    
+    collaborate sections.
 
 =back
 
 =head1 DESCRIPTION
 
-B<This program> will read the given input file(s) and do something
-useful with the contents thereof.
+B<This program> will search recursively for git repositories in given path and
+perform git operation on each found repository. 
+This allows user implementing feature that modify more than one repository to update
+multiple repositories using single call.
+
+=head1 EXAMPLES
+
+
 
 =cut
