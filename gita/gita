@@ -2,11 +2,13 @@
 
 use strict;
 use warnings;
+use utf8;
 use File::Basename;
 use lib dirname (__FILE__);
 use Gita;
 use Cwd;
 use Getopt::Long;
+use Pod::Text;
 
 sub main {
 
@@ -21,15 +23,15 @@ sub main {
                 'path=s');
     
     if($opt_help == 1) {
-        print "HELP";
+        pod2text(__FILE__);
         exit 0;
     }
     my $depth = $opt_depth;
     my $dry_run = $opt_dry_run;
     my $path = $opt_path;
 
+    # contains arguments that were not specified in GetOptions
     my @gitCommands=@ARGV;
-    # print "gitCommands=", join(" ", @gitCommands), "\n";
     
     my $gita = new Gita($path, $depth, $dry_run);
     if($gita->check_git_binary()) {
@@ -41,3 +43,53 @@ sub main {
     exit 0;
 }
 main();
+
+
+__END__
+=encoding utf8
+=head1 NAME
+
+gita - utility enhancing git command line tool
+
+=head1 SYNOPSIS
+
+gita [OPTIONS] [GIT_COMMANDS]
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<--help>
+
+    Print a brief help message and exits.
+
+=item B<--path PATH>
+    
+    Path to start searching for git repositories from.
+
+=item B<--depth DEPTH>
+    
+    Recurisivity search depth level.
+
+=item B<--dry-run>
+    
+    Path to start searching for git repositories from.
+
+=back
+
+=head1 GIT_COMMANDS
+
+=over 4
+
+=item B<>
+    
+    Path to start searching for git repositories from.
+
+=back
+
+=head1 DESCRIPTION
+
+B<This program> will read the given input file(s) and do something
+useful with the contents thereof.
+
+=cut

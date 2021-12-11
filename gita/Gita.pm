@@ -51,10 +51,12 @@ sub call_git_command {
         if($dry_run == 1) {
             print "Would call command:\n$command\n";
         } else {
-            print "\nRepository: ", File::Basename::basename($_), "\n\n";
+            print "-" x 30,
+                  "\nRepository: ", 
+                  File::Basename::basename($_),
+                  "\n\n";
             system $command;        
         }
-        
     }
 
     return 0;
