@@ -68,18 +68,23 @@ This directory have following structure:
 
 # Calling bellow command will create new branch in repo1 and repo2
 
-> ./gita --depth 3 checkout -b Feature3
+> ./gita --depth 3 checkout -b Feature4
 
 # Calling bellow command will add all modified filles in repo1 and repo2
 
 > ./gita --depth 3 add -u
 
-# Calling bellow command will commit changes in repo1 and repo2
+# Calling bellow command will commit changes in repo1 and repo2.
 
-> ./gita --depth 3 commit -m 'Implemented new feature'
+# Note currenlty whitespaces are not supported for argument commit cant be "New feature"
 
-# Calling bellow command will push new commits
+> ./gita --depth 3 commit -m Feature/4
+
+# Calling bellow command will push new commits (if remote configured)
 
 > ./gita --depth 3 push
 
+
+
+The idea for project functionallity comes from following existing project https://github.com/nosarthur/gita.
 =cut
