@@ -29,7 +29,6 @@ sub main {
     
     my $gita = new Gita($path, $depth, $dry_run);
     $gita->check_git_binary();
-    $gita->search_git_repos();
     $gita->call_git_command(join(" ", @gitCommands));
 }
 main();

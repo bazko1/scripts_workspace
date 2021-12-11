@@ -10,10 +10,9 @@ sub new {
         "dry_run" => shift
     };
 
-    
     bless $self, $class;
     print("Creating Gita class: ", $self->{'source_path'}," ", $self->{'depth_level'},"\n");
-    
+
     return $self;
 }
 
@@ -22,7 +21,7 @@ sub search_git_repos {
     my $self = shift;
     $source = $self->{'source_path'};
     $depth = $self->{'depth_level'};
-    print "search in $source\n";
+    print "Searching .git in $source\n";
     use File::Find::Rule;
     print($dir);
     my @gitdirs = File::Find::Rule
@@ -40,7 +39,13 @@ sub call_git_command {
     my $self = shift;
     my $subcommands = shift;
     my $dry_run = $self->{'dry_run'};
-    print("\nCalling command: git $subcommands\n");
+    my $command = "/usr/bin/env git ".$subcommands;
+    foreach($self->search_git_repos()) {
+        print "call on dir:= $_";
+    }
+
+    # print("\nCalling command: $command\n");
+    # system $command;
     return 0;
 }
 
