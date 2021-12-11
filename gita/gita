@@ -81,29 +81,19 @@ gita [OPTIONS] [GIT_COMMANDS]
 
 =head1 GIT_COMMANDS
 
-=over 1
 
-=item 
-    Commands and flags to be called using git tool.
+Commands and flags to be called using git tool.
 
-=item 
-    The commands should be those operating on already 
-
-=item
+The commands should be those operating on already 
     initialized git working area (init/clone does not make sense).
         
-=item
-    For supported commands see `git --help` - work, examine, grow,
-    
-=item    
-    collaborate sections.
-
-=back
+For supported commands see `git --help` - work, examine, grow, collaborate sections.
 
 =head1 DESCRIPTION
 
 B<This program> will search recursively for git repositories in given path and
 perform git operation on each found repository. 
+
 This allows user implementing feature that modify more than one repository to update
 multiple repositories using single call.
 
@@ -111,33 +101,32 @@ multiple repositories using single call.
 
 This directory have following structure:
 
-=over 1
-
-=item
     ├── gita 
-
-=item
     ├── Gita.pm
-
-=item    
     ├── test
-
-=item    
     │   ├── repo1
-
-=item    
-        │   ├── .git
-
-=item    
+    │   │   └── .git
     │   └── repo2
+            └── .git
 
-=item    
-        │   ├── .git
+# Calling bellow command will list status of repo1 and repo2
 
-=back
+> ./gita --depth 3 status
 
-Calling 
+# Calling bellow command will create new branch in repo1 and repo2
 
-> ./gita --depth 3 checkout -b Feature2
+> ./gita --depth 3 checkout -b Feature3
+
+# Calling bellow command will add all modified filles in repo1 and repo2
+
+> ./gita --depth 3 add -u
+
+# Calling bellow command will commit changes in repo1 and repo2
+
+> ./gita --depth 3 commit -m 'Implemented new feature'
+
+# Calling bellow command will push new commits
+
+> ./gita --depth 3 push
 
 =cut
