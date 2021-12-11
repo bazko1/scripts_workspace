@@ -42,7 +42,7 @@ def check_dependecies():
     for name in package_list:
         if not importlib.util.find_spec(name):
             print(f"ERROR: Program requires package '{name}' to be installed.\n"
-                  "Please install it by running:\n"
+                  "Please install pip and then package by running:\n"
                   f"> python3 -m pip install {name}\n")
             return False
     return True
