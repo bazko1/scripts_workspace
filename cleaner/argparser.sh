@@ -17,11 +17,11 @@ Associations and clean directory control:
                                         Default: \$HOME=${HOME}
     
     -s, --source-dir DIR                Directory to be cleaned if not defined default will be taken.
-                                        Default: Downloads.
+                                        Default: 'Downloads'.
 
     -a, --associations ASSOCIATIONS     Semicolon separated rules. If not given default will be used.
                                         Example: 'pdf,txt=Documents;img=Pictures'.
-                                        Default: ${DEFAULT_ASSOCIATIONS}
+                                        Default: '${DEFAULT_ASSOCIATIONS}'
 
     -r, --recursive                     Parse source directory recursively for subfolders.
                                         Example: In default config will clean also Downloads/subfolder and its
