@@ -72,7 +72,7 @@ sub call_git_command {
 # checks if there is git binary installed
 sub check_git_binary {
     my $self = shift;
-    my $git_version = `/usr/bin/env git --version 2>&1`;
+    my $git_version = `/usr/bin/env git --version 2>/dev/null`;
     my $r_c = $?;
     print "$git_version";
     return $r_c;
