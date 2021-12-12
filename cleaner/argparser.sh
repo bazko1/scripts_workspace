@@ -33,7 +33,7 @@ Associations and clean directory control:
 
 This tool provides functionallity for cleaning any directory by moving files to more dedicated directories.
 Its main purpose is to clean home 'Downloads' directory.
-Note: Defining associations nd paths override their defaults values.
+Note: Defining associations and paths override their defaults values.
 
 Examples:
     # Perform recursive cleaning dry run on test directory using default associations and limit depth.
