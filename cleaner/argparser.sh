@@ -1,7 +1,5 @@
-
-
 function usage() {
-    scriptname="$0"
+    scriptname=$(basename "$0")
     cat << EOF
 Usage: $scriptname
 Cleans home Downloads directory using default associations and destination directories.
@@ -15,11 +13,15 @@ Miscellaneous:
 
 Associations and clean directory control:
     -b, --base-dir DIR                  Base directory to use for finding sub path for cleaning. For example DIR=/home/user
-                                        Will result in program cleaning /home/user/Downloads.
-    -s, --source-dir DIR                Directory to be cleaned if not defined default will be taken  - Downloads.
+                                        Will result in program cleaning /home/user/SOURCE_DIR.
+                                        Default: \$HOME=${HOME}
+    
+    -s, --source-dir DIR                Directory to be cleaned if not defined default will be taken.
+                                        Default: Downloads.
 
     -a, --associations ASSOCIATIONS     Semicolon separated rules. If not given default will be used.
                                         Example: 'pdf,txt=Documents;img=Pictures'.
+                                        Default: ${DEFAULT_ASSOCIATIONS}
 
     -r, --recursive                     Parse source directory recursively for subfolders.
                                         Example: In default config will clean also Downloads/subfolder and its
@@ -31,6 +33,7 @@ Associations and clean directory control:
 
 This tool provides functionallity for cleaning any directory by moving files to more dedicated directories.
 Its main purpose is to clean home 'Downloads' directory.
+Note: Defining associations nd paths override their defaults values.
 
 Examples:
     # Perform recursive cleaning dry run on test directory using default associations and limit depth.

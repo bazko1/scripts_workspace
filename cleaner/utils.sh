@@ -2,6 +2,8 @@ LOG_FILE=cleaner.log
 QUIET=false
 DRY_RUN=false
 RECURSIVE=false
+DEFAULT_ASSOCIATIONS="doc,pdf,txt=Documents;png,jpg=Pictures;mp3,wav=Music;mp4,mkv=Videos"
+DEFAULT_SOURCE="Downloads"
 # Recreate log file every run
 $QUIET && :> $LOG_FILE
 
@@ -102,11 +104,9 @@ function clean_directory() {
 #######################################
 function parse_associations() {
     input=$1
-    echo INP $input
     IFS=';' read -ra rules <<< "$input"
     for rule in "${rules[@]}"
     do
-        echo RULE $rule
         IFS='=' read ext dir <<< "$rule"
         files_association["$ext"]="$dir"
     done

@@ -6,18 +6,14 @@ source ${script_path}/argparser.sh
 parse_args "$@"
 
 [ -z "${base_path}" ] && base_path="$HOME"
-[ -z "${source_dir}" ] && source_dir=${base_path}"/Downloads"
+[ -z "${source_dir}" ] && source_dir="${DEFAULT_SOURCE}"
 
 declare -A files_association
-[ -z "${associations}" ] && \
-files_association=( ["doc,pdf,txt"]="Documents"
-                    ["png,jpg"]="Pictures"
-                    ["mp3,wav"]="Music"
-                    ["mp4,mkv"]="Videos"
-) || parse_associations "${associations}"
+[ -z "${associations}" ] && associations="${DEFAULT_ASSOCIATIONS}"
+parse_associations "${associations}"
 
 # figure out source dir
-[ ! -d "$source_dir" ] && print_warning "Directory {./${source_dir}} do not exist. Will try absolute path." && \
+[ ! -d "$source_dir" ] && print_warning "Directory {./${source_dir}} do not exist. Will join with base path." && \
                           source_dir="${base_path}/${source_dir}"
 [ ! -d "$source_dir" ] && print_error "Directory {${source_dir}} do not exist!" &&
                           print_error "Cannot clean empty directory! Exiting..." && exit 1
