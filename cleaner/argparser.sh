@@ -1,7 +1,7 @@
 function usage() {
     scriptname=$(basename "$0")
     cat << EOF
-Usage: $scriptname
+Usage: $scriptname [OPTIONS]
 Cleans home Downloads directory using default associations and destination directories.
 
 Miscellaneous:
