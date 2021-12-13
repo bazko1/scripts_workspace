@@ -5,11 +5,11 @@ Usage: $scriptname [OPTIONS]
 Cleans home Downloads directory using default associations and destination directories.
 
 Miscellaneous:
-    -h, --help                Print this help text and exit
+    -h, --help                Print this help text and exit.
 
-    -q, --quiet               Suppress printing messages
+    -q, --quiet               Suppress printing messages.
 
-    -d, --dry-run             Do not move any file just print what would happen
+    -d, --dry-run             Do not move any file or create directory just print what would happen.
 
 Associations and clean directory control:
     -b, --base-dir DIR                  Base directory to use for finding sub path for cleaning. For example DIR=/home/user
@@ -20,9 +20,13 @@ Associations and clean directory control:
                                         Default: 'Downloads'.
 
     -a, --associations ASSOCIATIONS     Semicolon separated rules. If not given default will be used.
+                                        Single rule should be comma separated extensions = destination directory.
                                         Example: 'pdf,txt=Documents;img=Pictures'.
                                         Default: '${DEFAULT_ASSOCIATIONS}'
 
+    -c, --create                        Create destination directory if it does not exist.
+                                        Default: '${CREATE_NON_EXISTENT}'
+    
     -r, --recursive                     Parse source directory recursively for subfolders.
                                         Example: In default config will clean also Downloads/subfolder and its
                                         subfolders if such exists.
@@ -77,6 +81,10 @@ function parse_args() {
             -a|--associations)
                 associations="$2"
                 shift
+                shift
+                ;;
+            -c|--create)
+                CREATE_NON_EXISTENT=true
                 shift
                 ;;
             -r|--recursive)

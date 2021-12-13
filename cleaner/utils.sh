@@ -2,6 +2,8 @@ LOG_FILE=cleaner.log
 QUIET=false
 DRY_RUN=false
 RECURSIVE=false
+CREATE_NON_EXISTENT=false
+
 DEFAULT_ASSOCIATIONS="doc,pdf,txt=Documents;png,jpg=Pictures;mp3,wav=Music;mp4,mkv=Videos"
 DEFAULT_SOURCE="Downloads"
 # Recreate log file every run
@@ -34,6 +36,14 @@ function move_file() {
     mv "${1}" "${2}"
 }
 
+function create_directory() {
+    $DRY_RUN && \
+    print_info "Would create directory {${1}}." && \
+    return
+
+    mkdir "${1}"
+}
+
 #######################################
 # Cleans given source directory by moving files
 # to directories defined by extensions.
@@ -45,13 +55,33 @@ function move_file() {
 function clean_directory() {
     base_path="${1}"
     source_dir="${2}"
-    files_association="${3}"
 
     recurse_dirs=( "${source_dir}" )
 
     function main_loop() {
         loop_over="${1}"
         recurse_dirs=()
+        
+        # initial check if destination dirs exist or create them
+        for ext in ${!files_association[*]}
+        do
+            destination_dir="${files_association[$ext]}"
+            [ ! -d "$destination_dir" ] && destination_dir="${base_path}/${destination_dir}"
+            
+            if [ ! -d "$destination_dir" ] 
+            then
+                if $CREATE_NON_EXISTENT
+                then
+                    create_directory "${destination_dir}"
+                else
+                    print_warning "Directory {${destination_dir}} do not exist!" && \
+                    unset files_association[$ext]
+                    continue
+                fi
+            fi
+            
+            files_association[$ext]="${destination_dir}"
+        done
 
         for file in "${loop_over}"/*
         do
@@ -67,10 +97,6 @@ function clean_directory() {
             do
                 # figure out destination dir
                 destination_dir="${files_association[$ext]}"
-                [ ! -d "$destination_dir" ] && destination_dir="${base_path}/${destination_dir}"
-                [ ! -d "$destination_dir" ] && print_warning "Directory {${destination_dir}} do not exist!" \
-                && continue
-
                 IFS=',' read -ra extensions <<< "$ext"
 
                 for extension in "${extensions[@]}"
@@ -90,7 +116,7 @@ function clean_directory() {
 
         for rec_dir in "${recurse_dirs[@]}"
         do
-            main_loop "$rec_dir"
+            main_loop "${rec_dir}"
         done
         ((depth_counter++))
     done
@@ -104,10 +130,10 @@ function clean_directory() {
 #######################################
 function parse_associations() {
     input=$1
-    IFS=';' read -ra rules <<< "$input"
+    IFS=';' read -ra rules <<< "${input}"
     for rule in "${rules[@]}"
     do
-        IFS='=' read ext dir <<< "$rule"
-        files_association["$ext"]="$dir"
+        IFS='=' read ext dir <<< "${rule}"
+        files_association["$ext"]="${dir}"
     done
 }
