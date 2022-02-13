@@ -18,6 +18,6 @@ parse_associations "${associations}"
 [ ! -d "$source_dir" ] && print_error "Directory {${source_dir}} do not exist!" &&
                           print_error "Cannot clean empty directory! Exiting..." && exit 1
 
-print_info "Will clean {$source_dir} ."
+print_info "Will clean {$source_dir}."
 clean_directory "${base_path}" "${source_dir}"
 exit 0
